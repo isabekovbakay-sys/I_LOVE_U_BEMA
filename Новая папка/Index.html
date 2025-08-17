@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Для моей любимой ❤️</title>
+  <style>
+    body {
+      margin: 0;
+      height: 250vh;
+      background: linear-gradient(120deg, #ffdde1, #ee9ca7);
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+      color: #fff;
+    }
+
+    /* экран-заставка */
+    #overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.85);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+      z-index: 999;
+      transition: opacity 1s ease;
+    }
+
+    #overlay h2 { font-size: 2rem; margin-bottom: 20px; }
+
+    #overlay button {
+      background: #ff4d6d;
+      border: none;
+      padding: 15px 35px;
+      border-radius: 30px;
+      color: white;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    #overlay button:hover { transform: scale(1.1); }
+
+    /* основной контент */
+    #mainContent {
+      display: none;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow-y: auto;
+      padding: 20px;
+    }
+
+    h1 { font-size: 3.5rem; margin-bottom: 10px; text-shadow: 0 0 10px rgba(0,0,0,0.3); }
+    p { font-size: 1.3rem; margin-bottom: 20px; max-width: 600px; }
+
+    .btn {
+      background: #ff4d6d;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 25px;
+      color: white;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      margin: 10px;
+    }
+    .btn:hover { transform: scale(1.1); }
+
+    .heart {
+      position: absolute;
+      bottom: 0;
+      color: rgba(255,255,255,0.8);
+      font-size: 20px;
+      animation: float 6s linear infinite;
+    }
+    @keyframes float {
+      0% { transform: translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateY(-100vh) scale(0.5); opacity: 0; }
+    }
+
+    #counter { font-size: 1.2rem; margin-top: 15px; font-weight: bold; }
+    #loveMessage { font-size: 1.2rem; margin-top: 20px; max-width: 650px; line-height: 1.5; }
+    #choiceButtons { margin-top: 30px; }
+
+    /* галерея */
+    .photo-gallery-container {
+      margin-top: 35px;
+      width: 90%;
+      max-width: 300px;
+      position: relative;           
+      overflow: hidden;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      background: rgba(255,255,255,0.1);
+    }
+    .photo-gallery-track {
+      display: flex;
+      transition: transform 0.5s ease;
+    }
+    .photo-gallery-track img {
+      width: 100%;
+      max-width: 700px;
+      border-radius: 15px;
+      pointer-events: none;
+      user-select: none;
+    }
+    .gallery-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,77,109,0.8);
+      border: none;
+      color: white;
+      font-size: 2rem;
+      padding: 5px 12px;
+      cursor: pointer;
+      border-radius: 50%;
+      z-index: 10;
+      transition: background 0.3s;
+    }
+    .gallery-btn:hover { background: rgba(255,77,109,1); }
+    .prev { left: 10px; }
+    .next { right: 10px; }
+
+    /* финальное окно */
+    #finalOverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      z-index: 1000;
+      flex-direction: column;
+      padding: 20px;
+    }
+    #finalOverlay h2 { font-size: 2.5rem; margin-bottom: 20px; text-shadow: 0 0 15px rgba(0,0,0,0.4); }
+
+    /* позитив */
+    #finalOverlay.happy { background: rgba(0,0,0,0.7); animation: happyBg 3s infinite alternate; }
+    @keyframes happyBg {
+      0% { background: rgba(255, 182, 193, 0.8); }
+      100% { background: rgba(255, 105, 180, 0.9); }
+    }
+
+    /* грусть */
+    #finalOverlay.sad { background: rgba(0,0,0,0.9); animation: sadBg 3s infinite alternate; }
+    @keyframes sadBg {
+      0% { background: rgba(50,50,50,0.9); }
+      100% { background: rgba(20,20,20,0.95); }
+    }
+  </style>
+</head>
+<body>
+  <!-- заставка -->
+  <div id="overlay">
+    <h2>У меня к тебе есть кое-что важное…</h2>
+    <button onclick="openSurprise()">Открыть</button>
+  </div>
+
+  <!-- основной сайт -->
+  <div id="mainContent">
+    <h1>Прости меня, любимая ❤️</h1>
+    <div id="counter"></div>
+
+    <div id="loveMessage">
+      Мне без тебя очень тяжело…<br>
+      Я безумно влюблён в тебя и благодарен судьбе, что она подарила мне тебя.<br>
+      Я не хочу терять тебя.<br>
+      Ты - моё счастье, моя любовь и моя жизнь ❤️ <br>
+      Ты для меня вправду <span style="color: #ff4d6d;">очень особенная ЖАНМКА</span>
+    </div>
+
+    <!-- галерея -->
+    <div class="photo-gallery-container">
+      <button class="gallery-btn prev" onclick="moveGallery(-1)">&#10094;</button>
+      <div class="photo-gallery-track">
+        <img src="MyLove.png" alt="Наша фотография">
+        <img src="MyLove1.png" alt="Наша фотография">
+        <img src="MyLove2.png" alt="Наша фотография">
+        <img src="MyLove3.png" alt="Наша фотография">
+        <img src="MyLove4.png" alt="Наша фотография">
+        <img src="photo6.jpg" alt="Наша фотография">
+      </div>
+      <button class="gallery-btn next" onclick="moveGallery(1)">&#10095;</button>
+    </div>
+
+    <div id="choiceButtons">
+      <button class="btn" onclick="chooseYes()">Вернуться ко мне ❤️</button>
+      <button class="btn" style="background:#555;" onclick="chooseNo()">Нет… 😢</button>
+    </div>
+  </div>
+
+  <!-- финальное окно -->
+  <div id="finalOverlay"></div>
+
+  <script>
+    function openSurprise() {
+      const overlay = document.getElementById("overlay");
+      overlay.style.opacity = "0";
+      setTimeout(() => {
+        overlay.style.display = "none";
+        document.getElementById("mainContent").style.display = "flex";
+      }, 1000);
+    }
+
+    // сердечки
+    function createHeart(symbol="❤️") {
+      const heart = document.createElement("div");
+      heart.classList.add("heart");
+      heart.innerHTML = symbol;
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.fontSize = Math.random() * 25 + 20 + "px";
+      heart.style.animationDuration = (Math.random() * 3 + 3) + "s";
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 6000);
+    }
+    setInterval(() => createHeart("❤️"), 200);
+
+    // счётчик дней после расставания
+    const breakupDate = new Date("2025-08-13");
+    function updateCounter() {
+      const now = new Date();
+      const diff = now - breakupDate;
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      document.getElementById("counter").innerText = 
+        "С того дня, как мы расстались (" + breakupDate.toLocaleDateString("ru-RU") + "), прошло " + days + " дней…";
+    }
+    updateCounter();
+
+    // финальное окно
+    function showFinal(message, mood) {
+      const overlay = document.getElementById("finalOverlay");
+      overlay.innerHTML = `<h2>${message}</h2>`;
+      overlay.className = mood;
+      overlay.style.display = "flex";
+
+      if (mood === "happy") {
+        for (let i = 0; i < 40; i++) setTimeout(() => createHeart("💖"), i * 100);
+      } else {
+        for (let i = 0; i < 30; i++) setTimeout(() => createHeart("💔"), i * 150);
+      }
+    }
+
+    function chooseYes() { showFinal("Ты сделала меня самым счастливым человеком снова ❤️", "happy"); }
+    function chooseNo() { showFinal("Я всё равно буду любить тебя всегда… 💔", "sad"); }
+
+    // галерея
+    let currentIndex = 0;
+    function moveGallery(direction) {
+      const track = document.querySelector(".photo-gallery-track");
+      const images = track.querySelectorAll("img");
+      currentIndex += direction;
+      if (currentIndex < 0) currentIndex = 0;
+      if (currentIndex >= images.length) currentIndex = images.length - 1;
+      track.style.transform = `translateX(${-currentIndex * 100}%)`;
+    }
+  </script>
+</body>
+</html>
